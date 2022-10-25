@@ -1,21 +1,11 @@
+from enum import auto
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
 
-class Actor(models.Model):
-    
-    actor_name = models.CharField(max_length=40)
-    actor_id = models.AutoField(primary_key=True)
-    actor_mail=models.EmailField(max_length=40)
-    
-    actor_booked = models.ManyToManyField(Hall,through='DateTime')
-    actor_pending = models.ManyToManyField(Hall,through='DateTime')
-
-class DateTime(models.Model):
-    
-    actor = models.ForeignKey(Actor, on_delete=CASCADE)
-    hall = models.ForeignKey(Hall, on_delete=CASCADE)
-    booked = models.BooleanField()
-
+'''
+https://www.sankalpjonna.com/learn-django/the-right-way-to-use-a-manytomanyfield-in-django
+for future refrence
+'''
 class Hall(models.Model):
     
     #hall_isreq how to check in time slot?
@@ -26,11 +16,22 @@ class Hall(models.Model):
     hall_location = models.CharField(max_length=40)
     hall_capacity = models.IntegerField()
     hall_rating = models.IntegerField()
-    hall_image = models.CharField(max_length=40)
+    hall_image = models.URLField( max_length=200)
 
-    hall_selectedslots = ArrayField(ArrayField(models.IntegerField())) # [date int, time slot int]
+    # hall_selectedslots = ArrayField(ArrayField(models.IntegerField())) # [date int, time slot int] #no need we cann acess
 
-class Requests(models.Model):
+
+class Actor(models.Model):
     
-    req_id = models.AutoField(primary_key=True)
-    req_approved = models.BooleanField()
+    actor_name = models.CharField(max_length=40)
+    actor_id = models.AutoField(primary_key=True)
+    actor_mail=models.EmailField(max_length=40)
+    actor_bookings = models.ManyToManyField(Hall,through='Booking')
+class Booking(models.Model):
+    
+    actor = models.ForeignKey(Actor, on_delete=models.CASCADE)
+    hall = models.ForeignKey(Hall, on_delete=models.CASCADE)
+    booked = models.BooleanField()
+    pending=models.BooleanField()
+    slotStart=models.DateTimeField(null=True,blank=True)
+    slotEnd=models.DateTimeField(null=True,blank=True)
