@@ -1,5 +1,4 @@
 from asyncore import write
-from tkinter import N
 from rest_framework import serializers
 
 from restapi.models import User
