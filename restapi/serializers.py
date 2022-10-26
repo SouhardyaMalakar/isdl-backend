@@ -1,12 +1,12 @@
 from asyncore import write
 from rest_framework import serializers
 
-from restapi.models import User
+from restapi.models import User,Hall
 
-# class HallSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model=Hall
-#         fields='__all__'
+class HallSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Hall
+        fields='__all__'
 
 
 class UserSerializer(serializers.ModelSerializer):
