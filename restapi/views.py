@@ -3,7 +3,6 @@ import jwt
 import email
 import imp
 from re import T
-from tkinter import N
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.http.request import HttpRequest
