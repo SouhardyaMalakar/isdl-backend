@@ -1,3 +1,4 @@
+from email.policy import default
 from enum import auto, unique
 from re import T
 from unittest.util import _MAX_LENGTH
@@ -30,6 +31,7 @@ class User(AbstractUser):
     # id = models.AutoField(primary_key=True)
     email=models.EmailField(max_length=40,unique=True)
     bookings = models.ManyToManyField(Hall,through='Booking')
+    isAdmin=models.BooleanField(default=False)
     username=None
     password=models.CharField(max_length=256)
     USERNAME_FIELD="email"
