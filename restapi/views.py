@@ -33,7 +33,8 @@ def login(request):
         raise AuthenticationFailed("incorrect password")
     payload={
         'id':user.id,  # type: ignore
-        'name':user.email,
+        'name':user.name,
+        'email':user.email,
         'exp':datetime.utcnow()+timedelta(minutes=30),
         'iat':datetime.utcnow()       
     }
