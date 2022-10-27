@@ -131,7 +131,13 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ORIGIN_ALLOW_ALL=True
+CORS_ALLOW_ALL_ORIGINS = True  
 CORS_ALLOW_CREDENTIALS=True
 AUTH_USER_MODEL='restapi.User'
+#added for cookie
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SAMESITE = 'None'
 
 django_heroku.settings(locals())
