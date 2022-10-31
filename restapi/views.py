@@ -58,7 +58,7 @@ def userView(request):
     payload=Decode(request.query_params.get('jwt',"lol"))
     user=User.objects.get(pk=payload['id'])
     if user:
-        serializer=UserSerializer(user)
+        serializer=USerLoginSerializer(user)
         return Response(serializer.data)
     else:
         raise AuthenticationError("Not Authenticated")
