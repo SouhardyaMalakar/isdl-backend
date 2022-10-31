@@ -48,6 +48,7 @@ def login(request):
 
 
 
+#lol
 @api_view(['GET'])
 def userView(request):
     print(request.data,request.query_params,request.auth)
