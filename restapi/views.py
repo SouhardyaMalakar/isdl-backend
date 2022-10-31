@@ -55,7 +55,7 @@ def Decode(token):
 @api_view(['GET'])
 def userView(request):
     print(request.data,request.query_params,request.auth)
-    payload=Decode(request.query_params.get('jwt',"lol")))
+    payload=Decode(request.query_params.get('jwt',"lol"))
     user=User.objects.get(pk=payload['id'])
     if user:
         serializer=UserSerializer(user)
