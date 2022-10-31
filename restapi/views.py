@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from multiprocessing import AuthenticationError
 import jwt
 from django.shortcuts import render
 from django.http import JsonResponse
@@ -9,7 +10,7 @@ from rest_framework.decorators import api_view
 from rest_framework.exceptions import AuthenticationFailed
 
 from restapi.models import User
-from .serializers import USerLoginSerializer
+from .serializers import USerLoginSerializer, UserSerializer
 
 def api_home(request ,*args, **kwargs):
     return JsonResponse({"Message" :"this is inside"})
@@ -49,12 +50,19 @@ def login(request):
 
 def Decode(token):
     decode=jwt.decode(token,'secret',algorithms=['HS256'])
-    print(decode,type(decode))
+    return decode
 #lol
 @api_view(['GET'])
 def userView(request):
     print(request.data,request.query_params,request.auth)
-    print(Decode(request.query_params.get('jwt',"lol")))
+    payload=Decode(request.query_params.get('jwt',"lol")))
+    user=User.objects.get(pk=payload['id'])
+    if user:
+        serializer=UserSerializer(user)
+        return Response(serializer.data)
+    else:
+        raise AuthenticationError("Not Authenticated")
+
     # token=request.COOKIES.get('jwt')
     # if token==None:
     #     raise AuthenticationFailed("Unauthenticated")
