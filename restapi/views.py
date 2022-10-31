@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from multiprocessing import AuthenticationError
 import jwt
 from django.shortcuts import render
 from django.http import JsonResponse
@@ -9,7 +10,7 @@ from rest_framework.decorators import api_view
 from rest_framework.exceptions import AuthenticationFailed
 
 from restapi.models import User
-from .serializers import USerLoginSerializer
+from .serializers import USerLoginSerializer, UserSerializer
 
 def api_home(request ,*args, **kwargs):
     return JsonResponse({"Message" :"this is inside"})
@@ -47,19 +48,44 @@ def login(request):
     return response
 
 
+def Decode(token):
+    try:
+        decode=jwt.decode(token,'secret',algorithms=['HS256'])
+        return decode
+    except:
+        return None
 
+def authuser(request): #returns user 
+    payload=Decode(request.query_params.get('jwt',"lol"))
+    if payload==None:
+        return None #cannot auth user
+    user=User.objects.get(pk=payload['id'])
+    if user:
+        return user
+    else:
+        return None
+
+def authadmin(request):
+    payload=Decode(request.query_params.get('jwt',"lol"))
+    if payload==None:
+        return None #cannot auth user
+    user=User.objects.get(pk=payload['id'])
+    if user and user.isAdmin:
+        return user
+    else:
+        return None
+    
+#lol2
 @api_view(['GET'])
 def userView(request):
-    token=request.COOKIES.get('jwt')
-    if token==None:
-        raise AuthenticationFailed("Unauthenticated")
-    try:
-        payload=jwt.decode(token,'secret',algorithms=['HS256'])
-    except:
-        raise AuthenticationFailed("Unauthenticated")
-    user=User.objects.get(pk=payload['id'])
-    serializer=USerLoginSerializer(user)
-    return Response(serializer.data)
+    user=authuser(request)
+    if user:
+        serializer=USerLoginSerializer(user)
+        r=Response()
+        r.data=serializer.data
+        return r
+    else:
+        raise AuthenticationError("Not Authenticated")
 
 @api_view(['POST'])
 def logout(request):
