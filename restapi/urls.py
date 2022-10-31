@@ -5,5 +5,6 @@ urlpatterns = [
     path('register',register),
     path('login',login),
     path('user',userView),
-    path('logout',logout)
+    path('logout',logout),
+    path('createBooking',createBooking)
 ]

@@ -1,7 +1,7 @@
 from asyncore import write
 from rest_framework import serializers
 
-from restapi.models import User,Hall
+from restapi.models import User,Hall,Booking
 
 class HallSerializer(serializers.ModelSerializer):
     class Meta:
@@ -29,3 +29,9 @@ class USerLoginSerializer(serializers.ModelSerializer):
             instance.set_password(password)
         instance.save()
         return instance
+
+class BookingSerializer(serializers.ModelSerializer):
+        class Meta:
+            model=Booking
+            fields='__all__'
+            
