@@ -54,7 +54,7 @@ def Decode(token):
 @api_view(['GET'])
 def userView(request):
     print(request.data,request.query_params,request.auth)
-    print(Decode(request.query_params['jwt'][0]))
+    print(Decode(request.query_params.get('jwt',"lol")))
     # token=request.COOKIES.get('jwt')
     # if token==None:
     #     raise AuthenticationFailed("Unauthenticated")
