@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from multiprocessing import AuthenticationError
+from tkinter import N
 import jwt
 from django.shortcuts import render
 from django.http import JsonResponse
@@ -49,14 +50,39 @@ def login(request):
 
 
 def Decode(token):
-    decode=jwt.decode(token,'secret',algorithms=['HS256'])
-    return decode
+    try:
+        decode=jwt.decode(token,'secret',algorithms=['HS256'])
+        return decode
+    except:
+        return None
+
+def authuser(request):
+    payload=Decode(request.query_params.get('jwt',"lol"))
+    if payload==None:
+        return None #cannot auth user
+    user=User.objects.get(pk=payload['id'])
+    if user:
+        return user
+    else:
+        return None
+
+def authadmin(request):
+    payload=Decode(request.query_params.get('jwt',"lol"))
+    if payload==None:
+        return None #cannot auth user
+    user=User.objects.get(pk=payload['id'])
+    if user and user.isAdmin:
+        return user
+    else:
+        return None
+    
 #lol2
 @api_view(['GET'])
 def userView(request):
-    print(request.data,request.query_params,request.auth)
-    payload=Decode(request.query_params.get('jwt',"lol"))
-    user=User.objects.get(pk=payload['id'])
+    user=authuser(request)
+    # print(request.data,request.query_params,request.auth)
+    # payload=Decode(request.query_params.get('jwt',"lol"))
+    # user=User.objects.get(pk=payload['id'])
     if user:
         serializer=USerLoginSerializer(user)
         return Response(serializer.data)
