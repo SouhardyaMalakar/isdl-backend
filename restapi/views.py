@@ -60,7 +60,7 @@ def userView(request):
     #     raise AuthenticationFailed("Unauthenticated")
     # user=User.objects.get(pk=payload['id'])
     # serializer=USerLoginSerializer(user)
-    # return Response(serializer.data)
+    return Response({"s":"s"})
 
 @api_view(['POST'])
 def logout(request):
