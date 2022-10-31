@@ -48,7 +48,7 @@ def login(request):
 
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 def userView(request):
     print(request.data,request.query_params,request.auth)
     # token=request.COOKIES.get('jwt')
