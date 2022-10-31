@@ -51,16 +51,16 @@ def login(request):
 @api_view(['GET'])
 def userView(request):
     print(request.data,request.query_params,request.auth)
-    token=request.COOKIES.get('jwt')
-    if token==None:
-        raise AuthenticationFailed("Unauthenticated")
-    try:
-        payload=jwt.decode(token,'secret',algorithms=['HS256'])
-    except:
-        raise AuthenticationFailed("Unauthenticated")
-    user=User.objects.get(pk=payload['id'])
-    serializer=USerLoginSerializer(user)
-    return Response(serializer.data)
+    # token=request.COOKIES.get('jwt')
+    # if token==None:
+    #     raise AuthenticationFailed("Unauthenticated")
+    # try:
+    #     payload=jwt.decode(token,'secret',algorithms=['HS256'])
+    # except:
+    #     raise AuthenticationFailed("Unauthenticated")
+    # user=User.objects.get(pk=payload['id'])
+    # serializer=USerLoginSerializer(user)
+    # return Response(serializer.data)
 
 @api_view(['POST'])
 def logout(request):
