@@ -56,7 +56,7 @@ def Decode(token):
     except:
         return None
 
-def authuser(request):
+def authuser(request): #returns user 
     payload=Decode(request.query_params.get('jwt',"lol"))
     if payload==None:
         return None #cannot auth user
@@ -80,25 +80,13 @@ def authadmin(request):
 @api_view(['GET'])
 def userView(request):
     user=authuser(request)
-    # print(request.data,request.query_params,request.auth)
-    # payload=Decode(request.query_params.get('jwt',"lol"))
-    # user=User.objects.get(pk=payload['id'])
     if user:
         serializer=USerLoginSerializer(user)
-        return Response(serializer.data)
+        r=Response()
+        r.data=serializer.data
+        return r
     else:
         raise AuthenticationError("Not Authenticated")
-
-    # token=request.COOKIES.get('jwt')
-    # if token==None:
-    #     raise AuthenticationFailed("Unauthenticated")
-    # try:
-    #     payload=jwt.decode(token,'secret',algorithms=['HS256'])
-    # except:
-    #     raise AuthenticationFailed("Unauthenticated")
-    # user=User.objects.get(pk=payload['id'])
-    # serializer=USerLoginSerializer(user)
-    return Response({"s":"s"})
 
 @api_view(['POST'])
 def logout(request):
