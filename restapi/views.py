@@ -51,7 +51,7 @@ def login(request):
 def Decode(token):
     decode=jwt.decode(token,'secret',algorithms=['HS256'])
     return decode
-#lol
+#lol2
 @api_view(['GET'])
 def userView(request):
     print(request.data,request.query_params,request.auth)
