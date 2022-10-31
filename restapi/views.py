@@ -50,7 +50,7 @@ def login(request):
 
 @api_view(['GET'])
 def userView(request):
-    print(request.data,request.query_params)
+    print(request.data,request.query_params,request.auth)
     token=request.COOKIES.get('jwt')
     if token==None:
         raise AuthenticationFailed("Unauthenticated")
