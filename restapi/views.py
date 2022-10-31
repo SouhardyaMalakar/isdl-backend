@@ -47,11 +47,14 @@ def login(request):
     return response
 
 
-
+def Decode(token):
+    decode=jwt.decode(token,'secret',algorithms=['HS256'])
+    print(decode,type(decode))
 #lol
 @api_view(['GET'])
 def userView(request):
     print(request.data,request.query_params,request.auth)
+    print(Decode(request.query_params['jwt'][0]))
     # token=request.COOKIES.get('jwt')
     # if token==None:
     #     raise AuthenticationFailed("Unauthenticated")
