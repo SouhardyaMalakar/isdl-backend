@@ -1,6 +1,5 @@
 from datetime import datetime, timedelta
 from multiprocessing import AuthenticationError
-from tkinter import N
 import jwt
 from django.shortcuts import render
 from django.http import JsonResponse
