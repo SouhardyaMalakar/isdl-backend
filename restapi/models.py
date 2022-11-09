@@ -38,7 +38,6 @@ class User(AbstractUser):
     REQUIRED_FIELDS=[]
 
 class Booking(models.Model):
-    
     actor = models.ForeignKey(User, on_delete=models.CASCADE)
     hall = models.ForeignKey(Hall, on_delete=models.CASCADE)
     booked = models.BooleanField()
